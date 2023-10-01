@@ -10,6 +10,8 @@
 #include "stats.h"
 #include "allocate.h"
 #include "normal.h"
+#include <string.h>
+void warning(char* fmt, ...); //erorr2
 
 /*
  * Normalize scores:
@@ -20,9 +22,7 @@
  *              options set for that score and for the assignment.
  */
 
-void normalize(c, s)
-Course *c;
-Stats *s;
+void normalize(Course *c)
 {
         Student *stp;
         Score *rscp, *nscp;
