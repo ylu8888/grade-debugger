@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdarg.h>
 
 int errors;
 int warnings;
@@ -21,7 +22,7 @@ void fatal( char* fmt){
         exit(1);
 }
 
-void error(char* fmt){
+void error(char* fmt, ...){
         va_list args;
         va_start(args, fmt);
 
@@ -33,7 +34,7 @@ void error(char* fmt){
         errors++;
 }
 
-void warning(char* fmt){
+void warning(char* fmt, ...){
         va_list args;
         va_start(args, fmt);
 
@@ -45,7 +46,7 @@ void warning(char* fmt){
         warnings++;
 }
 
-void debug(char* fmt){
+void debug(char* fmt, ...){
         va_list args;
         va_start(args, fmt);
 
