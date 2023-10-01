@@ -11,6 +11,7 @@
 #include "stats.h"
 #include "allocate.h"
 #include "read.h"
+#include <string.h> //fixed error3 included string library)
 
 /*
  * Input file stack
@@ -26,11 +27,16 @@ char tokenbuf[512];
 char *tokenptr = tokenbuf;
 char *tokenend = tokenbuf;
 
-Course *readfile(root)
-char *root;
-{
-        Course *c;
+void fatal(const char *fmt, ...); //declare fatal func (fixed error1)
+int checktoken(char *key);  //declare second func (for error2)
+int istoken(); // declare func(error 4)
+void error(char* fmt, ...); // declare error func (for error 5)
+void warning(char* fmt, ...); //declare warning func (error 6)
+int tokensize(); //declare func(error 7);
 
+
+Course *readfile(char* root){
+        Course *c;
         ifile = newifile();
         ifile->prev = NULL;
         ifile->name = root;
@@ -538,8 +544,7 @@ void advanceeol()
  * If it does match, the matched token is removed from the input stream.
  */
 
-void expecttoken(key)
-char *key;
+void expecttoken(char *key) //(fixed error i put char*key in parameters)
 {
         if(!istoken()) advancetoken();
         if(istoken() && !strcmp(tokenptr, key)) {
@@ -556,9 +561,9 @@ char *key;
  * and TRUE is returned.
  */
 
-int checktoken(key)
-char *key;
+int checktoken(char *key)
 {
+
         if(!istoken()) advancetoken();
         if(istoken() && !strcmp(tokenptr, key)) {
                 flushtoken();
@@ -608,7 +613,7 @@ void previousfile()
         fprintf(stderr, " ]");
 }
 
-void pushfile(e)
+void pushfile() //removed the e parameter (fixed error 8)
 {
         Ifile *nfile;
         char *n;
