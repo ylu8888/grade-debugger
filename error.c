@@ -10,7 +10,7 @@ int errors;
 int warnings;
 int dbflag = 1;
 
-void fatal( char* fmt){
+void fatal( char* fmt, ...){
         va_list args;
         va_start(args, fmt);
 
