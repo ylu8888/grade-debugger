@@ -15,6 +15,17 @@
 /*
  * Course grade computation program
  */
+void fatal( char* fmt, ...); //declare func fix error1
+void reportparams(FILE *fd, char *fn, Course *c); //declare fun fix error2
+void reportmoments(FILE *fd, Stats *s); //delcare func fix error3
+void reportcomposites(FILE *fd, Course* c, int nm); //declare func fix error4?
+void reportfreqs(FILE *fd, Stats *s); //error 5
+void reportquantiles(FILE *fd, Stats *s); //error 6
+void reportquantilesummaries(FILE *fd, Stats *s); //error 7
+void reporthistos(FILE *fd, Course *c, Stats *s); //error 8
+void reportscores(FILE *fd, Course *c, int nm); //error 9
+void reporttabs(FILE *fd, Course *c, int nm); //error 10
+
 
 #define REPORT          0
 #define COLLATE         1
