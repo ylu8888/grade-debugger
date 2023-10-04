@@ -15,6 +15,8 @@
 #include <time.h>
 #endif
 
+void histo(FILE *fd, int bins[], float min, float max, int cnt);
+
 void reportparams(FILE *fd, char *fn, Course *c) //made it void 
 {
         char *today = NULL;
@@ -114,7 +116,7 @@ void reportquantilesummaries(FILE *fd, Stats *s)
   Classstats *csp;
   Sectionstats *ssp;
   int i, n;
-  float q, r, min, max;
+  float r, min, max;
 
   fprintf(fd, "QUANTILE SUMMARIES\n\n");
         for(csp = s->cstats; csp != NULL; csp = csp->next) {
@@ -125,7 +127,7 @@ void reportquantilesummaries(FILE *fd, Stats *s)
                                              quantiles[i]);
            min = scores[0];
            max = scores[n-1];
-           for(i = 0; i < sizeof(quantiles)/sizeof(*quantiles); i++) {
+           for(i = 0; i < (int)(sizeof(quantiles)/sizeof(*quantiles)); i++) {
              fprintf(fd, "   ");
              fprintf(fd, "%6.2f  ", quantiles[i]);
              fprintf(fd, "%6.2f  ", scores[i]);
@@ -133,7 +135,7 @@ void reportquantilesummaries(FILE *fd, Stats *s)
                r = (scores[i] - min) / (max - min);
                fprintf(fd, "%6.2f", r);
              } else {
-               fprintf(fd, "***.**", r);
+               fprintf(fd, "%6.2f", r);
              }
              fprintf(fd, "\n");
            }
@@ -147,7 +149,7 @@ void reportquantilesummaries(FILE *fd, Stats *s)
                                                 quantiles[i]);
               min = scores[0];
               max = scores[n-1];
-              for(i = 0; i < sizeof(quantiles)/sizeof(*quantiles); i++) {
+              for(i = 0; i < (int)(sizeof(quantiles)/sizeof(*quantiles)); i++) {
                 fprintf(fd, "   ");
                 fprintf(fd, "%6.2f  ", quantiles[i]);
                 fprintf(fd, "%6.2f  ", scores[i]);
@@ -155,7 +157,7 @@ void reportquantilesummaries(FILE *fd, Stats *s)
                   r = (scores[i] - min) / (max - min);
                   fprintf(fd, "%6.2f", r);
                 } else {
-                  fprintf(fd, "***.**", r);
+                  fprintf(fd, "%6.2f", r);
                 }
                 fprintf(fd, "\n");
               }
@@ -188,7 +190,7 @@ void reportquantiles(FILE *fd, Stats *s)
                 fprintf(fd, "(%6.2f,%6.2f)", fp->score,
                         (float)fp->numless * 100.0/csp->tallied);
               } else {
-                fprintf(fd, "(%6.2f,***.**)", fp->score,
+                fprintf(fd, "%6.2f %6.2f", fp->score,
                         (float)fp->numless * 100.0/csp->tallied);
               }
            }
@@ -209,7 +211,7 @@ void reportquantiles(FILE *fd, Stats *s)
                     fprintf(fd, "(%6.2f,%6.2f)", fp->score,
                             (float)fp->numless * 100.0/ssp->tallied);
                  } else {
-                    fprintf(fd, "(%6.2f,***.**)", fp->score,
+                    fprintf(fd, "(%6.2f, %6.2f)", fp->score,
                             (float)fp->numless * 100.0/ssp->tallied);
                  }
               }
@@ -247,7 +249,7 @@ void reportmoments(FILE *fd, Stats *s)
 
 void reportscores(FILE *fd, Course *c, int nm)
 {
-        Assignment *ap;
+       // Assignment *ap;
         Student *stp;
         Score *rscp, *nscp;
 
@@ -280,8 +282,8 @@ void reportscores(FILE *fd, Course *c, int nm)
 void reportcomposites(FILE *fd, Course* c, int nm) //changed nm to integer
 {
         Student *stp;
-        Score *scp;
-        Assignment *ap;
+       // Score *scp;
+       // Assignment *ap;
 
         fprintf(fd, "STUDENT COMPOSITE SCORES\n\n");
         for(stp = c->roster; stp != NULL; stp = stp->cnext) {
@@ -302,7 +304,7 @@ void reportcomposites(FILE *fd, Course* c, int nm) //changed nm to integer
 void reporthistos(FILE *fd, Course *c, Stats *s)
 {
         Classstats *csp;
-        Sectionstats *ssp;
+       // Sectionstats *ssp;
         Student *stp;
         Freqs *fp;
         int col, pct, cnt;
@@ -360,12 +362,10 @@ void reporthistos(FILE *fd, Course *c, Stats *s)
         }
 }
 
-histo(fd, bins, min, max, cnt)
-FILE *fd;
-int bins[], cnt;
-float min, max;
+void histo(FILE *fd, int bins[], float min, float max, int cnt)
+
 {
-    int row, col, pct, cmax;
+    int row, col, cmax;
     /*
      * Determine the bin with the most tallies.
      */
@@ -399,11 +399,11 @@ float min, max;
             min, max);
 }    
 
-void reporttabs(FILE *fd, Course *c, int nm)
+void reporttabs(FILE *fd, Course *c)
 {
         Assignment *ap;
         Student *stp;
-        Score *rscp, *nscp;
+        Score *rscp;
 
         fprintf(fd, "STUDENT INDIVIDUAL SCORES\n\n");
         fprintf(fd, "STUDENT\t");
