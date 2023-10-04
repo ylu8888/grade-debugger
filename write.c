@@ -9,6 +9,9 @@
 #include "gradedb.h"
 #include "write.h"
 
+void error(char* fmt, ...);
+
+
 void writeprofessor(fd, p)
 FILE *fd;
 Professor *p;
@@ -49,6 +52,7 @@ Score *s;
                         case RAW:
                           break;
                         }
+                        break;
                 case USELIKEAVG:
                         fprintf(fd, " USELIKEAVG");
                         break;
