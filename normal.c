@@ -99,6 +99,7 @@ Sectionstats *ssp;
                            csp->stddev = 2*EPSILON;
                          }
                         return(linear(s, csp->mean, csp->stddev, a->mean, a->stddev));
+                        
                 case BYSECTION:
                         if(ssp->stddev < EPSILON) {
                            warning("Std. dev. of %s, section %s too small for normalization.",
@@ -106,7 +107,10 @@ Sectionstats *ssp;
                            ssp->stddev = 2*EPSILON;
                          }
                         return(linear(s, ssp->mean, ssp->stddev, a->mean, a->stddev));
+                        
+                     
                 }
+                break; //fixes the fall through error tahnk god !!
         case SCALE:
                 if(a->max < EPSILON) {
                   warning("Declared maximum score of %s too small for normalization.",
@@ -114,6 +118,7 @@ Sectionstats *ssp;
                   a->max = 2*EPSILON;
                 }
                 return(scale(s, a->max, a->scale));
+               
         case QUANTILE:
                 switch(a->ngroup) {
                 case BYCLASS:
@@ -149,6 +154,7 @@ Sectionstats *ssp;
                         return((float)fp->numless*100.0/n);
                 }
         }
+        return -1; //for error?
 }
 
 /*
