@@ -3,14 +3,14 @@
 #include <stdio.h>
 #include <string.h>
 #include <getopt.h>
-#include "version.h"
-#include "global.h"
-#include "gradedb.h"
-#include "stats.h"
-#include "read.h"
-#include "write.h"
-#include "normal.h"
-#include "sort.h"
+#include "../include/version.h"
+#include "../include/global.h"
+#include "../include/gradedb.h"
+#include "../include/stats.h"
+#include "../include/read.h"
+#include "../include/write.h"
+#include "../include/normal.h"
+#include "../include/sort.h"
 
 /*
  * Course grade computation program
@@ -40,6 +40,8 @@ void reporttabs(FILE *fd, Course *c, int nm); //error 10
 #define ALLOUTPUT      10
 #define SORTBY         11
 #define NONAMES        12
+
+
 
 static struct option_info {
         unsigned int val;
@@ -77,7 +79,7 @@ static struct option_info {
                   "Suppress printing of students' names."}
 };
 
-static char *short_options = "";
+static char *short_options = "rac:k:-rc";
 static struct option long_options[12];
 
 static void init_options() {
@@ -92,6 +94,14 @@ static void init_options() {
         op->has_arg = oip->has_arg;
         op->flag = NULL;
         op->val = oip->val;
+
+         //to allow single and double dash
+        // if (oip->chr != 0) {
+        //     char short_option[3] = {oip->chr, ':', '\0'};
+        //     strcat(short_options, short_option);
+
+        // }
+
     }
 }
 
@@ -102,14 +112,25 @@ static void usage();
 
 int errors, warnings;
 
-int orig_main(argc, argv)
-int argc;
-char *argv[];
+int orig_main(int argc, char *argv[])
+
 {
         Course *c;
         Stats *s;
         char optval;
         int (*compare)() = comparename;
+
+        //my code hehe
+
+        //  for (int i = 1; i < argc; i++) {
+        //     if (strcmp(argv[i], "-r") == 0) {
+        //         report++;
+        //          fprintf(stderr, "what the heck\n");
+        //         break;
+        //     }
+        //  }
+        
+        // end of my code
 
         fprintf(stderr, BANNER);
         init_options();
@@ -118,12 +139,16 @@ char *argv[];
             if((optval = getopt_long(argc, argv, short_options, long_options, NULL)) != -1) {
                 switch(optval) {
                 case REPORT: report++; break;
+                case 'r': report++; break;
                 case COLLATE: collate++; break;
+                case 'c': collate++; break;
                 case TABSEP: tabsep++; break;
                 case NONAMES: nonames++; break;
                 case SORTBY:
-                    if(!strcmp(optarg, "name"))
+                    if(!strcmp(optarg, "name")){
+                        
                         compare = comparename;
+                    }
                     else if(!strcmp(optarg, "id"))
                         compare = compareid;
                     else if(!strcmp(optarg, "score"))
@@ -147,6 +172,7 @@ char *argv[];
                     composite++; scores++; histograms++; tabsep++;
                     break;
                 case '?':
+                    
                     usage(argv[0]);
                     break;
                 default:
@@ -178,7 +204,7 @@ char *argv[];
         fprintf(stderr, "Calculating statistics...\n");
         s = statistics(c);
         if(s == NULL) fatal("There is no data from which to generate reports.");
-        normalize(c, s);
+        normalize(c);
         composites(c);
         sortrosters(c, comparename);
         checkfordups(c->roster);
