@@ -79,7 +79,7 @@ static struct option_info {
                   "Suppress printing of students' names."}
 };
 
-static char *short_options = "rac:k:-rc";
+static char *short_options = "rcfqsmphat:kn";
 static struct option long_options[12];
 
 static void init_options() {
@@ -125,7 +125,7 @@ int orig_main(int argc, char *argv[])
         //  for (int i = 1; i < argc; i++) {
         //     if (strcmp(argv[i], "-r") == 0) {
         //         report++;
-        //          fprintf(stderr, "what the heck\n");
+        //          fprintf(stderr, "wha\n");
         //         break;
         //     }
         //  }
